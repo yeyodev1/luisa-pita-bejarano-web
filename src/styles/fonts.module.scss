@@ -1,9 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+// ─────────────────────────────────────────────────────────────────────────────
+// Fuentes editoriales — Luisa Pita Bejarano (sitio raíz, luxe editorial)
+// Display serif: Fraunces (voluptuoso, editorial)
+// Sans accent:   Space Grotesk (mismo que funnel, mantiene coherencia de marca)
+// Body:          Plus Jakarta Sans (legibilidad larga)
+// Fonts ya precargadas desde index.html para evitar FOIT.
+// ─────────────────────────────────────────────────────────────────────────────
 
 :root {
-  --font-montserrat: 'Montserrat', sans-serif;
-  --font-inter: 'Inter', sans-serif;
+  --font-display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  --font-sans:    'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'Space Grotesk', ui-monospace, monospace;
 }
 
-$font-principal: 'Montserrat', sans-serif;
-$font-secondary: 'Inter', sans-serif;
+$font-display:   var(--font-display);
+$font-sans:      var(--font-sans);
+$font-mono:      var(--font-mono);
+
+// Legacy aliases — compat con scaffold inicial
+$font-principal: $font-sans;
+$font-secondary: $font-display;

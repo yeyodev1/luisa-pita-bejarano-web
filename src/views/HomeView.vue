@@ -1,33 +1,45 @@
 <script setup lang="ts">
+import HeroSection from '@/components/home/HeroSection.vue'
+import ManifestoSection from '@/components/home/ManifestoSection.vue'
+import MethodSection from '@/components/home/MethodSection.vue'
+import GallerySection from '@/components/home/GallerySection.vue'
+import CommunitySection from '@/components/home/CommunitySection.vue'
+import TestimonialsSection from '@/components/home/TestimonialsSection.vue'
+import AuthoritySection from '@/components/home/AuthoritySection.vue'
+import FinalCtaSection from '@/components/home/FinalCtaSection.vue'
+import FaqSection from '@/components/home/FaqSection.vue'
+import MarqueeText from '@/components/ui/MarqueeText.vue'
+
+const marqueeItems = [
+  'Un año contigo',
+  'Sin dietas restrictivas',
+  'Comunidad anual',
+  'Mujeres decididas',
+  'Online · Ecuador · Latam · USA · Europa',
+  'Por invitación',
+]
 </script>
 
 <template>
-  <div class="home-view">
-    <h1>Este es el HomeView de Yeyo</h1>
-    <p>luisa-pita-bejarano-web-frontapp listo para trabajar</p>
+  <div class="home">
+    <HeroSection />
+    <MarqueeText :items="marqueeItems" theme="green" :speed="42" />
+    <ManifestoSection />
+    <MethodSection />
+    <GallerySection />
+    <CommunitySection />
+    <MarqueeText :items="['No es para todas', 'Si calificas, recibes el aviso primero', 'Compromiso anual real']" theme="dark" :speed="48" />
+    <TestimonialsSection />
+    <AuthoritySection />
+    <FinalCtaSection />
+    <FaqSection />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.home-view {
+.home {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  gap: 1rem;
-
-  h1 {
-    font-family: $font-principal;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: $primary;
-  }
-
-  p {
-    font-family: $font-principal;
-    font-size: 1.2rem;
-    color: $text-secondary;
-  }
+  background: var(--bg);
 }
 </style>

@@ -1,19 +1,38 @@
-// Brand colors - customize per project
-$primary: #2094D2;
-$primary-dark: #010D27;
-$primary-light: #fefefe;
-$secondary: #2BBB92;
+// ─────────────────────────────────────────────────────────────────────────────
+// Luisa Pita Bejarano — Brand tokens canónicos
+// Tokens consistentes con funnel (CLAUDE.md). Sitio editorial luxe.
+// ─────────────────────────────────────────────────────────────────────────────
 
-$white: #fefefe;
-$text-light: #fefefe;
-$text-secondary: #6b7280;
+// Marca
+$lpb-green:        #16C784;
+$lpb-green-dark:   #0A9E68;
+$lpb-green-deep:   #087A50;
+$lpb-black:        #0D1117;
+$lpb-ink:          #1A1F2A;
+$lpb-graphite:     #3A4451;
+$lpb-muted:        #6B7280;
+$lpb-light:        #F0FFF8;
+$lpb-surface:      #F5FFFA;
+$lpb-cream:        #F8F5EF;
+$lpb-paper:        #FBFAF6;
+$lpb-white:        #FFFFFF;
+$lpb-line:         #E5E9EC;
+
+// Legacy aliases (compat con scaffold inicial — no romper imports antiguos)
+$primary:          $lpb-green;
+$primary-dark:     $lpb-black;
+$primary-light:    $lpb-white;
+$secondary:        $lpb-green-dark;
+$white:            $lpb-white;
+$text-light:       $lpb-white;
+$text-secondary:   $lpb-muted;
 
 // Alert colors
-$alert-warning: #f59e0b;
-$alert-info: #3b82f6;
-$alert-success: #10b981;
-$alert-error: #ef4444;
+$alert-warning:    #F59E0B;
+$alert-info:       #3B82F6;
+$alert-success:    $lpb-green;
+$alert-error:      #EF4444;
 $alert-warning-bg: rgba($alert-warning, 0.1);
-$alert-info-bg: rgba($alert-info, 0.1);
+$alert-info-bg:    rgba($alert-info, 0.1);
 $alert-success-bg: rgba($alert-success, 0.1);
-$alert-error-bg: rgba($alert-error, 0.1);
+$alert-error-bg:   rgba($alert-error, 0.1);

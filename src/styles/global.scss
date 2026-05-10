@@ -1,27 +1,110 @@
 @use './colorVariables.module.scss' as *;
 @use './fonts.module.scss' as *;
-
-html, body {
-  background-color: $white;
-  margin: 0;
-  font-family: $font-principal;
-}
+@use './typography.scss' as *;
 
 :root {
-  --bg: #{$white};
-  --text: #{$primary-dark};
-  --border: #{rgba($primary-dark, 0.08)};
-  --accent: #{$primary};
+  --bg:          #{$lpb-paper};
+  --bg-dark:     #{$lpb-black};
+  --text:        #{$lpb-black};
+  --text-soft:   #{$lpb-graphite};
+  --text-mute:   #{$lpb-muted};
+  --border:      #{rgba($lpb-black, 0.08)};
+  --accent:      #{$lpb-green};
+  --accent-dark: #{$lpb-green-dark};
+  --surface:     #{$lpb-surface};
+  --cream:       #{$lpb-cream};
+  --line:        #{$lpb-line};
 }
 
 [data-theme='dark'] {
-  --bg: #{$primary-dark};
-  --text: #{$text-light};
-  --border: #{rgba($white, 0.12)};
-  --accent: #{$primary};
+  --bg:          #{$lpb-black};
+  --text:        #{$lpb-white};
+  --text-soft:   #{rgba($lpb-white, 0.78)};
+  --text-mute:   #{rgba($lpb-white, 0.5)};
+  --border:      #{rgba($lpb-white, 0.12)};
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
 }
 
 body {
+  margin: 0;
+  font-family: $font-sans;
   background-color: var(--bg);
   color: var(--text);
+  font-size: 1rem;
+  line-height: 1.55;
+  overflow-x: clip;
+}
+
+::selection {
+  background: $lpb-green;
+  color: $lpb-black;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+// Lenis smooth scroll classes (recomendadas por la librería)
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+// Container utility
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.container--narrow {
+  max-width: 920px;
+}
+
+// Reveal initial states (las animaciones de GSAP los desplazan al show)
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(48px);
+  will-change: opacity, transform;
+}
+
+[data-reveal-ready] {
+  opacity: 1;
+  transform: none;
+  transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,0,1);
 }
