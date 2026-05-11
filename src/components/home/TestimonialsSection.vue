@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { gsap, ScrollTrigger } from '@/composables/useScrollReveal'
+import { gsap } from '@/composables/useScrollReveal'
 import nicole from '@/assets/testimonios/nicole.webp'
 import mariaisabel from '@/assets/testimonios/mariaisabel.webp'
 import mauro from '@/assets/testimonios/mauro.webp'
 
-interface Testi {
-  quote: string
-  name: string
-  role: string
-  photo: string
-}
-
-const items: Testi[] = [
+const items = [
   {
     quote: 'Probé de todo durante años. Entré pensando que sería otro intento — y a los seis meses ya no reconocía mi cuerpo. Lo más importante: no me volví obsesiva. Aprendí a sostenerlo.',
     name: 'María Isabel',
@@ -34,59 +27,34 @@ const items: Testi[] = [
 ]
 
 const root = ref<HTMLElement | null>(null)
-const trackEl = ref<HTMLElement | null>(null)
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
-  if (!root.value || !trackEl.value) return
-  const track = trackEl.value
+  if (!root.value) return
+
+  document.body.style.overflowX = 'hidden'
 
   ctx = gsap.context(() => {
-    const mm = gsap.matchMedia()
-
-    mm.add('(min-width: 880px)', () => {
-      // Use the sticky wrapper as the pin target instead of the root section
-      const stickyWrapper = root.value?.querySelector('.testimonials__sticky') as HTMLElement
-      
-      // Calculate horizontal scroll distance
-      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 100)
-      // Provide a reasonable scroll duration even if distance is small
-      const scrollDuration = () => Math.max(distance(), window.innerHeight)
-
-      if (stickyWrapper) {
-        gsap.to(track, {
-          x: () => -distance(),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: root.value,
-            start: 'top top',
-            end: () => `+=${scrollDuration()}`,
-            pin: stickyWrapper,
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        })
-      }
+    gsap.from(root.value!.querySelectorAll('.testimonials__card'), {
+      opacity: 0,
+      y: 40,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.1,
+      scrollTrigger: { trigger: '.testimonials__track', start: 'top 80%' },
     })
-
-    // Force a refresh after a short delay to account for any font/image loads 
-    // that might shift the starting trigger position of the pinned section.
-    setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 200)
-
   }, root.value)
 })
 
 onBeforeUnmount(() => {
   ctx?.revert()
-  ScrollTrigger.refresh()
+  document.body.style.overflowX = ''
 })
 </script>
 
 <template>
-  <section class="testimonials" ref="root">
-    <div class="testimonials__sticky">
+  <section class="testimonials" id="historias" ref="root">
+    <div class="testimonials__inner">
       <header class="testimonials__header">
         <span class="eyebrow eyebrow--green">Historias</span>
         <h2 class="testimonials__title display-lg">
@@ -95,7 +63,7 @@ onBeforeUnmount(() => {
         </h2>
       </header>
 
-      <div class="testimonials__track" ref="trackEl">
+      <div class="testimonials__track">
         <article v-for="(t, i) in items" :key="i" class="testimonials__card">
           <span class="testimonials__num">{{ String(i + 1).padStart(2, '0') }} / {{ String(items.length).padStart(2, '0') }}</span>
           <blockquote class="testimonials__quote">
@@ -120,21 +88,19 @@ onBeforeUnmount(() => {
   background: $lpb-black;
   color: $lpb-white;
   width: 100%;
-  overflow-x: hidden;
-
-  @media (min-width: 880px) {
-    overflow: clip;
-  }
 }
 
-.testimonials__sticky {
+.testimonials__inner {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: clamp(2rem, 5vw, 4rem);
   padding-block: clamp(4rem, 8vw, 6rem);
   padding-inline: clamp(2.5rem, 9vw, 9rem);
+
+  @media (min-width: 880px) {
+    justify-content: center;
+  }
 }
 
 .testimonials__header {
@@ -163,15 +129,22 @@ onBeforeUnmount(() => {
   gap: clamp(1rem, 2vw, 1.75rem);
   padding-inline: clamp(1.25rem, 4vw, 2.5rem);
 
+  @media (min-width: 880px) {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   @media (max-width: 880px) {
     flex-direction: column;
     gap: 1rem;
     overflow: visible;
     padding-inline: 0;
-  }
-
-  @media (min-width: 880px) {
-    will-change: transform;
   }
 }
 
@@ -184,6 +157,7 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  scroll-snap-align: start;
 
   @media (max-width: 880px) {
     width: 100%;
@@ -191,6 +165,12 @@ onBeforeUnmount(() => {
 
   @media (min-width: 880px) {
     width: clamp(420px, 36vw, 560px);
+    transition: transform 0.4s cubic-bezier(0.2, 0.7, 0, 1), border-color 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      border-color: rgba($lpb-white, 0.2);
+    }
   }
 }
 
@@ -224,7 +204,7 @@ onBeforeUnmount(() => {
   border-top: 1px solid rgba($lpb-white, 0.08);
   padding-top: 1rem;
 
-  >div {
+  > div {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;

@@ -12,6 +12,7 @@ const includes = [
 ]
 
 const root = ref<HTMLElement | null>(null)
+const listEl = ref<HTMLElement | null>(null)
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
@@ -19,8 +20,8 @@ onMounted(() => {
   ctx = gsap.context(() => {
     gsap.from(root.value!.querySelectorAll('.community__row'), {
       opacity: 0,
-      y: 40,
-      duration: 1,
+      y: 30,
+      duration: 0.8,
       ease: 'power3.out',
       stagger: 0.08,
       scrollTrigger: { trigger: '.community__list', start: 'top 75%' },
@@ -42,7 +43,7 @@ onBeforeUnmount(() => ctx?.revert())
         </h2>
       </header>
 
-      <ol class="community__list">
+      <ol class="community__list" ref="listEl">
         <li v-for="item in includes" :key="item.num" class="community__row">
           <span class="community__num">{{ item.num }}</span>
           <div class="community__text">
@@ -60,21 +61,24 @@ onBeforeUnmount(() => ctx?.revert())
 .community {
   background: $lpb-paper;
   color: $lpb-black;
-  padding-block: clamp(5rem, 12vw, 9rem);
+  padding-block: clamp(5rem, 12vw, 10rem);
   padding-inline: clamp(2.5rem, 9vw, 9rem);
   width: 100%;
 }
 
 .community__inner {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: clamp(2.5rem, 5vw, 6rem);
   width: 100%;
   margin-inline: auto;
   max-width: 1440px;
 
   @media (min-width: 960px) {
+    display: grid;
     grid-template-columns: 0.7fr 1.3fr;
     align-items: start;
+    gap: clamp(3rem, 6vw, 6rem);
   }
 }
 
@@ -82,6 +86,12 @@ onBeforeUnmount(() => ctx?.revert())
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  @media (min-width: 960px) {
+    position: sticky;
+    top: 7rem;
+    padding-top: 0.5rem;
+  }
 
   @media (max-width: 960px) {
     align-items: center;
@@ -106,13 +116,15 @@ onBeforeUnmount(() => ctx?.revert())
 .community__title--italic {
   font-style: italic;
   color: $lpb-green-dark;
+  display: block;
+  margin-top: 0.15em;
 }
 
 .community__list {
   list-style: none;
   padding: 0;
   margin: 0;
-  border-top: 1px solid rgba($lpb-black, 0.15);
+  border-top: 1px solid rgba($lpb-black, 0.12);
 }
 
 .community__row {
@@ -121,7 +133,6 @@ onBeforeUnmount(() => ctx?.revert())
   grid-template-columns: auto 1fr;
   gap: 1.5rem clamp(1rem, 3vw, 2.5rem);
   padding: clamp(1.5rem, 3.5vw, 2.5rem) 0;
-  align-items: baseline;
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
@@ -134,8 +145,9 @@ onBeforeUnmount(() => ctx?.revert())
 .community__num {
   font-family: $font-mono;
   font-size: 0.78rem;
+  font-weight: 600;
   letter-spacing: 0.18em;
-  color: $lpb-graphite;
+  color: $lpb-green-dark;
   padding-top: 0.45rem;
 }
 
@@ -148,7 +160,7 @@ onBeforeUnmount(() => ctx?.revert())
     font-family: $font-display;
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
     line-height: 1.15;
     letter-spacing: -0.015em;
     margin: 0;
@@ -159,7 +171,7 @@ onBeforeUnmount(() => ctx?.revert())
   p {
     font-family: $font-sans;
     color: $lpb-graphite;
-    line-height: 1.55;
+    line-height: 1.6;
     margin: 0;
     max-width: 65ch;
   }
@@ -169,7 +181,7 @@ onBeforeUnmount(() => ctx?.revert())
   position: absolute;
   inset: auto 0 0 0;
   height: 1px;
-  background: rgba($lpb-black, 0.15);
+  background: rgba($lpb-black, 0.1);
   grid-column: 1 / -1;
 }
 </style>
