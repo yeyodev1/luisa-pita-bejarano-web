@@ -12,7 +12,6 @@ const includes = [
 ]
 
 const root = ref<HTMLElement | null>(null)
-const listEl = ref<HTMLElement | null>(null)
 let ctx: gsap.Context | null = null
 
 onMounted(() => {
@@ -43,7 +42,7 @@ onBeforeUnmount(() => ctx?.revert())
         </h2>
       </header>
 
-      <ol class="community__list" ref="listEl">
+      <ol class="community__list">
         <li v-for="item in includes" :key="item.num" class="community__row">
           <span class="community__num">{{ item.num }}</span>
           <div class="community__text">
