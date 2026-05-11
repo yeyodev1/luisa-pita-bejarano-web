@@ -19,7 +19,10 @@ defineProps<{ items: string[]; speed?: number; theme?: 'light' | 'dark' | 'green
 .marquee {
   --speed: 38s;
   overflow: hidden;
-  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  min-height: clamp(4rem, 8vw, 6rem);
+  display: flex;
+  align-items: center;
+  padding-block: clamp(1rem, 2vw, 1.5rem);
   border-block: 1px solid transparent;
 
   &--dark {

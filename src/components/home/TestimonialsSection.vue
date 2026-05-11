@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { gsap } from '@/composables/useScrollReveal'
+import { gsap, ScrollTrigger } from '@/composables/useScrollReveal'
 import nicole from '@/assets/testimonios/nicole.webp'
 import mariaisabel from '@/assets/testimonios/mariaisabel.webp'
 import mauro from '@/assets/testimonios/mauro.webp'
@@ -42,28 +42,46 @@ onMounted(() => {
   const track = trackEl.value
 
   ctx = gsap.context(() => {
-    // Horizontal scroll en desktop
     const mm = gsap.matchMedia()
 
     mm.add('(min-width: 880px)', () => {
-      const distance = () => track.scrollWidth - window.innerWidth + 80
-      gsap.to(track, {
-        x: () => -distance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: root.value,
-          start: 'top top',
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      })
+      // Use the sticky wrapper as the pin target instead of the root section
+      const stickyWrapper = root.value?.querySelector('.testimonials__sticky') as HTMLElement
+      
+      // Calculate horizontal scroll distance
+      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 100)
+      // Provide a reasonable scroll duration even if distance is small
+      const scrollDuration = () => Math.max(distance(), window.innerHeight)
+
+      if (stickyWrapper) {
+        gsap.to(track, {
+          x: () => -distance(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.value,
+            start: 'top top',
+            end: () => `+=${scrollDuration()}`,
+            pin: stickyWrapper,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        })
+      }
     })
+
+    // Force a refresh after a short delay to account for any font/image loads 
+    // that might shift the starting trigger position of the pinned section.
+    setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 200)
+
   }, root.value)
 })
 
-onBeforeUnmount(() => ctx?.revert())
+onBeforeUnmount(() => {
+  ctx?.revert()
+  ScrollTrigger.refresh()
+})
 </script>
 
 <template>
@@ -101,11 +119,11 @@ onBeforeUnmount(() => ctx?.revert())
   position: relative;
   background: $lpb-black;
   color: $lpb-white;
-  overflow: clip;
   width: 100%;
+  overflow-x: hidden;
 
   @media (min-width: 880px) {
-    height: auto;
+    overflow: clip;
   }
 }
 
@@ -113,6 +131,7 @@ onBeforeUnmount(() => ctx?.revert())
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: clamp(2rem, 5vw, 4rem);
   padding-block: clamp(4rem, 8vw, 6rem);
   padding-inline: clamp(2.5rem, 9vw, 9rem);
@@ -143,24 +162,21 @@ onBeforeUnmount(() => ctx?.revert())
   display: flex;
   gap: clamp(1rem, 2vw, 1.75rem);
   padding-inline: clamp(1.25rem, 4vw, 2.5rem);
-  will-change: transform;
 
   @media (max-width: 880px) {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    padding-block: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: visible;
+    padding-inline: 0;
+  }
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  @media (min-width: 880px) {
+    will-change: transform;
   }
 }
 
 .testimonials__card {
   flex: 0 0 auto;
-  width: min(78vw, 540px);
   background: $lpb-ink;
   border: 1px solid rgba($lpb-white, 0.08);
   border-radius: 8px;
@@ -168,7 +184,10 @@ onBeforeUnmount(() => ctx?.revert())
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  scroll-snap-align: start;
+
+  @media (max-width: 880px) {
+    width: 100%;
+  }
 
   @media (min-width: 880px) {
     width: clamp(420px, 36vw, 560px);

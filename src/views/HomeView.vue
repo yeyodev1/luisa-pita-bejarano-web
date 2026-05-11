@@ -38,8 +38,7 @@ const marqueeItems = [
 
 <style lang="scss" scoped>
 .home {
-  display: flex;
-  flex-direction: column;
+  display: block;
   background: var(--bg);
 }
 </style>

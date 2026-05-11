@@ -5,12 +5,37 @@ import { gsap } from '@/composables/useScrollReveal'
 
 const { luisa } = useCloudinary()
 
-// Variantes Cloudinary verificadas: 2 y 11. Fallback: usar mismas en distintos crops.
-const shots = [
-  { src: luisa(2, { w: 900, h: 1200, crop: 'fill', gravity: 'face' }), label: 'Disciplina', span: 'tall' },
-  { src: luisa(11, { w: 1100, h: 800, crop: 'fill', gravity: 'face' }), label: 'Presencia', span: 'wide' },
-  { src: luisa(2, { w: 800, h: 800, crop: 'fill', gravity: 'face' }), label: 'Cuerpo', span: 'square' },
-  { src: luisa(11, { w: 900, h: 1400, crop: 'fill', gravity: 'face' }), label: 'Editorial', span: 'tallest' },
+const editorial = [
+  {
+    src: luisa(2, { w: 800, h: 1050, crop: 'thumb', gravity: 'face' }),
+    srcLg: luisa(2, { w: 1400, h: 1850, crop: 'thumb', gravity: 'face' }),
+    label: 'Disciplina',
+    span: 'half',
+  },
+  {
+    src: luisa(11, { w: 1100, h: 800, crop: 'fill', gravity: 'face' }),
+    srcLg: luisa(11, { w: 2000, h: 1450, crop: 'fill', gravity: 'face' }),
+    label: 'Presencia',
+    span: 'half',
+  },
+  {
+    src: luisa(2, { w: 700, h: 1000, crop: 'thumb', gravity: 'center' }),
+    srcLg: luisa(2, { w: 1200, h: 1700, crop: 'thumb', gravity: 'center' }),
+    label: 'Cuerpo',
+    span: 'third',
+  },
+  {
+    src: luisa(11, { w: 1300, h: 1000, crop: 'fill', gravity: 'center' }),
+    srcLg: luisa(11, { w: 2200, h: 1700, crop: 'fill', gravity: 'center' }),
+    label: 'Editorial',
+    span: 'two-thirds',
+  },
+  {
+    src: luisa(2, { w: 1400, h: 900, crop: 'fill', gravity: 'auto' }),
+    srcLg: luisa(2, { w: 2400, h: 1500, crop: 'fill', gravity: 'auto' }),
+    label: 'Propósito',
+    span: 'full',
+  },
 ]
 
 const root = ref<HTMLElement | null>(null)
@@ -19,20 +44,39 @@ let ctx: gsap.Context | null = null
 onMounted(() => {
   if (!root.value) return
   ctx = gsap.context(() => {
-    const items = root.value!.querySelectorAll('.gallery__item')
-    items.forEach((el, i) => {
+    const titleLines = root.value!.querySelectorAll('.gallery__title-line')
+    gsap.from(titleLines, {
+      y: 60,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power4.out',
+      stagger: 0.12,
+      scrollTrigger: { trigger: root.value, start: 'top 80%' },
+    })
+
+    root.value!.querySelectorAll('.gallery__img').forEach((el) => {
+      const img = el.querySelector('img')
+      if (!img) return
       gsap.fromTo(
-        el,
-        { opacity: 0, y: 80 },
+        img,
+        { yPercent: -6, scale: 1.04 },
         {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          delay: (i % 3) * 0.05,
-          scrollTrigger: { trigger: el, start: 'top 90%' },
+          yPercent: 6,
+          scale: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
         },
       )
+    })
+
+    root.value!.querySelectorAll('.gallery__item').forEach((el, i) => {
+      gsap.from(el.querySelector('.gallery__img'), {
+        clipPath: 'inset(0 0 100% 0)',
+        duration: 1.4,
+        ease: 'power4.out',
+        delay: i * 0.08,
+        scrollTrigger: { trigger: el, start: 'top 85%' },
+      })
     })
   }, root.value)
 })
@@ -42,30 +86,36 @@ onBeforeUnmount(() => ctx?.revert())
 
 <template>
   <section class="gallery" id="historias" ref="root">
-    <div class="gallery__header-inner">
+    <div class="gallery__container">
       <header class="gallery__header">
-        <span class="eyebrow">Editorial</span>
+        <span class="eyebrow gallery__eyebrow">Editorial</span>
         <h2 class="gallery__title display-md">
-          La estética de quien se decide.
+          <span class="gallery__title-line">La estética</span>
+          <span class="gallery__title-line">de quien se decide.</span>
         </h2>
       </header>
-    </div>
 
-    <div class="gallery__grid">
-      <figure
-        v-for="(s, i) in shots"
-        :key="i"
-        class="gallery__item"
-        :class="`gallery__item--${s.span}`"
-      >
-        <div class="gallery__img-wrap">
-          <img :src="s.src" :alt="`Luisa Pita — ${s.label}`" loading="lazy" />
-        </div>
-        <figcaption>
-          <span class="gallery__num">{{ String(i + 1).padStart(2, '0') }}</span>
-          <span class="gallery__label">{{ s.label }}</span>
-        </figcaption>
-      </figure>
+      <div class="gallery__grid">
+        <figure
+          v-for="(item, i) in editorial"
+          :key="i"
+          class="gallery__item"
+          :class="`gallery__item--${item.span}`"
+        >
+          <div class="gallery__img">
+            <img
+              :src="item.src"
+              :srcset="`${item.src} 1x, ${item.srcLg} 2x`"
+              :alt="`Luisa Pita — ${item.label}`"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="gallery__caption">
+            <span class="gallery__num">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span class="gallery__label">{{ item.label }}</span>
+          </figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 </template>
@@ -74,15 +124,14 @@ onBeforeUnmount(() => ctx?.revert())
 .gallery {
   background: $lpb-paper;
   color: $lpb-black;
-  padding-block: clamp(5rem, 11vw, 8rem);
-  padding-inline: clamp(2.5rem, 9vw, 9rem);
+  padding-block: clamp(5rem, 12vw, 10rem);
   width: 100%;
 }
 
-.gallery__header-inner {
+.gallery__container {
   width: 100%;
-  margin-inline: auto;
   max-width: 1440px;
+  margin-inline: auto;
 }
 
 .gallery__header {
@@ -91,107 +140,127 @@ onBeforeUnmount(() => ctx?.revert())
   align-items: center;
   text-align: center;
   gap: 1rem;
-  margin-bottom: clamp(2rem, 5vw, 3.5rem);
-  max-width: 1100px;
-  margin-inline: auto;
+  padding-inline: clamp(2.5rem, 9vw, 9rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+
+  @media (min-width: 720px) {
+    align-items: flex-start;
+    text-align: left;
+    padding-inline: clamp(2.5rem, 9vw, 9rem);
+  }
+}
+
+.gallery__eyebrow {
+  color: $lpb-green-dark;
 }
 
 .gallery__title {
   margin: 0;
   font-style: italic;
+  line-height: 1.05;
+
+  @media (min-width: 720px) {
+    max-width: 12ch;
+  }
+}
+
+.gallery__title-line {
+  display: block;
 }
 
 .gallery__grid {
   display: grid;
-  gap: 0.85rem;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  margin-inline: auto;
-  max-width: 1440px;
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  padding-inline: clamp(2.5rem, 9vw, 9rem);
 
   @media (min-width: 720px) {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
-    grid-auto-rows: minmax(180px, auto);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
   }
 }
 
 .gallery__item {
-  position: relative;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.75rem;
+  width: 100%;
 
-  @media (max-width: 720px) {
-    aspect-ratio: 4 / 5;
+  @media (min-width: 720px) {
+    gap: 0.85rem;
   }
 }
 
-.gallery__img-wrap {
+@media (min-width: 720px) {
+  .gallery__item--full {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery__item--half { grid-column: span 6; }
+  .gallery__item--third { grid-column: span 4; }
+  .gallery__item--two-thirds { grid-column: span 8; }
+  .gallery__item--full { grid-column: span 12; }
+}
+
+.gallery__img {
   position: relative;
   overflow: hidden;
-  border-radius: 2px;
-  flex: 1 1 auto;
-  background: rgba($lpb-black, 0.06);
+  border-radius: 3px;
+  background: rgba($lpb-black, 0.04);
+  width: 100%;
+  aspect-ratio: 4 / 5;
+
+  @media (min-width: 720px) {
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
+
+  @media (min-width: 1024px) {
+    min-height: 400px;
+  }
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transition: transform .8s cubic-bezier(.2,.7,0,1), filter .8s ease;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 60%, rgba($lpb-black, 0.3) 100%);
-    opacity: 0.6;
-    transition: opacity .4s ease;
+    transition: transform 1s cubic-bezier(0.2, 0.7, 0, 1);
+    will-change: transform;
   }
 }
 
-.gallery__item:hover .gallery__img-wrap img {
-  transform: scale(1.05);
-  filter: contrast(1.06);
+.gallery__item:hover .gallery__img img {
+  transform: scale(1.06);
 }
 
-.gallery__item:hover .gallery__img-wrap::after {
-  opacity: 0.3;
-}
-
-@media (min-width: 720px) {
-  .gallery__item--tall    { grid-column: span 2; grid-row: span 3; aspect-ratio: 3 / 4; }
-  .gallery__item--wide    { grid-column: span 4; grid-row: span 2; aspect-ratio: 16 / 11; }
-  .gallery__item--square  { grid-column: span 2; grid-row: span 2; aspect-ratio: 1 / 1; }
-  .gallery__item--tallest { grid-column: span 4; grid-row: span 3; aspect-ratio: 4 / 5; }
-}
-
-.gallery__item figcaption {
+.gallery__caption {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding-top: 0.4rem;
+  width: 100%;
 }
 
 .gallery__num {
   font-family: $font-mono;
   font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.18em;
-  color: $lpb-graphite;
+  color: $lpb-muted;
 }
 
 .gallery__label {
   font-family: $font-display;
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
   color: $lpb-black;
 }
 </style>

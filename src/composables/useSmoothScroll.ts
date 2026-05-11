@@ -1,5 +1,9 @@
 import Lenis from 'lenis'
 import { onBeforeUnmount, onMounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 let instance: Lenis | null = null
 
@@ -8,9 +12,10 @@ export const useSmoothScroll = () => {
     if (instance) return
     if (typeof window === 'undefined') return
 
-    // Respeta prefers-reduced-motion
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduce) return
+
+    gsap.ticker.lagSmoothing(0)
 
     instance = new Lenis({
       duration: 1.15,
@@ -20,11 +25,13 @@ export const useSmoothScroll = () => {
       touchMultiplier: 1.4,
     })
 
+    instance.on('scroll', ScrollTrigger.update)
+
     const raf = (time: number) => {
       instance?.raf(time)
-      window.requestAnimationFrame(raf)
+      requestAnimationFrame(raf)
     }
-    window.requestAnimationFrame(raf)
+    requestAnimationFrame(raf)
   })
 
   onBeforeUnmount(() => {
