@@ -7,19 +7,19 @@ import mariaisabel from '@/assets/testimonios/mariaisabel.webp'
 const items = [
   {
     quote: 'Probé de todo durante años. Entré pensando que sería otro intento — y a los seis meses ya no reconocía mi cuerpo. Lo más importante: no me volví obsesiva. Aprendí a sostenerlo.',
-    name: 'María Isabel',
+    name: 'Carolina',
     role: 'Empresaria · Quito',
     photo: mariaisabel,
   },
   {
     quote: 'Tengo dos hijos y un negocio. Pensé que no tenía tiempo. La diferencia fue que esto se acopló a mi vida, no al revés. Un año después, sigo comiendo igual y entrenando igual — y mi cuerpo cambió.',
-    name: 'Nicole',
+    name: 'Valentina',
     role: 'Dueña de negocio · Guayaquil',
     photo: nicole,
   },
   {
     quote: 'Llegué a los 42 pensando que ya era tarde para cambios reales. Un año después no solo transformé mi cuerpo — recuperé una energía que creía perdida. La comunidad te sostiene, la metodología te guía, y Luisa no te deja bajar los brazos.',
-    name: 'Andrea',
+    name: 'Gabriela',
     role: 'Arquitecta · Quito',
   },
 ]
