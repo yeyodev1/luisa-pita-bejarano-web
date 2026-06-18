@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { gsap } from '@/composables/useScrollReveal'
+import cliente1 from '@/assets/testimonios/cliente1.png'
+import cliente2 from '@/assets/testimonios/cliente2.png'
+import cliente3 from '@/assets/testimonios/cliente3.png'
 
 interface Testimonial {
   quote: string
@@ -11,19 +14,22 @@ interface Testimonial {
 
 const items: Testimonial[] = [
   {
-    quote: 'Probé de todo durante años. Entré pensando que sería otro intento — y a los seis meses ya no reconocía mi cuerpo. Lo más importante: no me volví obsesiva. Aprendí a sostenerlo.',
-    name: 'Cliente 1',
-    role: 'Empresaria · Quito',
+    quote: 'Entrenar 3 veces por semana durante los últimos 3 años ha cambiado mi vida. Hoy me siento súper tonificada, fuerte y en mi mejor momento físico. Lo mejor de todo es el bienestar integral: hormonalmente me siento increíble y con una estabilidad emocional enorme. ¡Me siento totalmente regia!',
+    name: 'Irene Icaza',
+    role: 'Independiente',
+    photo: cliente1,
   },
   {
-    quote: 'Tengo dos hijos y un negocio. Pensé que no tenía tiempo. La diferencia fue que esto se acopló a mi vida, no al revés. Un año después, sigo comiendo igual y entrenando igual — y mi cuerpo cambió.',
-    name: 'Cliente 2',
-    role: 'Dueña de negocio · Guayaquil',
+    quote: 'Llevar las riendas de Fritega, viajar por trabajo y ser mamá de tres no es fácil, pero mi salud es prioridad. Entrenar 5 veces por semana desde hace 3 años me mantiene fuerte, regia y súper tonificada. Es mi momento del día para mí misma.',
+    name: 'Cristina Vargas',
+    role: 'Empresaria y Mamá de 3 hijos',
+    photo: cliente2,
   },
   {
-    quote: 'Llegué a los 42 pensando que ya era tarde para cambios reales. Un año después no solo transformé mi cuerpo — recuperé una energía que creía perdida. La comunidad te sostiene, la metodología te guía, y Luisa no te deja bajar los brazos.',
-    name: 'Cliente 3',
-    role: 'Arquitecta · Quito',
+    quote: 'Ser mamá de cuatro y trabajar a tiempo completo no me impidió cambiar mi vida. ¡He bajado casi 40 libras! Al principio requirió esfuerzo, pero ver mis propios cambios cada semana se convirtió en mi mayor motivación. Hoy me siento más fuerte, activa y segura de mí misma que nunca.',
+    name: 'Blanka Zurita',
+    role: 'Mamá de 4 hijos y Trabajadora',
+    photo: cliente3,
   },
 ]
 
