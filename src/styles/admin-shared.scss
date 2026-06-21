@@ -1,0 +1,46 @@
+@use '@/styles/index.scss' as *;
+
+.admin-users__btn,
+.admin-payments__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.25rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  border: 1px solid transparent;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.admin-users__btn--primary,
+.admin-payments__btn--primary {
+  background: $lpb-black;
+  color: $lpb-white;
+
+  &:hover:not(:disabled) {
+    background: $lpb-ink;
+    transform: translateY(-1px);
+  }
+}
+
+.admin-users__btn--ghost,
+.admin-payments__btn--ghost {
+  background: $lpb-white;
+  color: $lpb-graphite;
+  border-color: var(--border);
+
+  &:hover:not(:disabled) {
+    background: $lpb-cream;
+    border-color: rgba($lpb-black, 0.15);
+  }
+}

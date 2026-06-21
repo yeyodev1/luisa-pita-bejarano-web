@@ -4,6 +4,8 @@ defineProps<{
   variant?: 'primary' | 'ghost' | 'outline-light'
   size?: 'md' | 'lg'
   target?: string
+  disabled?: boolean
+  loading?: boolean
 }>()
 </script>
 
@@ -26,9 +28,11 @@ defineProps<{
     type="button"
     class="btn"
     :class="[`btn--${variant ?? 'primary'}`, `btn--${size ?? 'md'}`]"
+    :disabled="disabled || loading"
   >
+    <span v-if="loading" class="btn__spinner" aria-hidden="true" />
     <span class="btn__label"><slot /></span>
-    <svg class="btn__arrow" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <svg v-if="!loading" class="btn__arrow" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </button>
@@ -56,6 +60,26 @@ defineProps<{
 
   &:hover &__arrow {
     transform: translateX(4px);
+  }
+
+  &__spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.75s linear infinite;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

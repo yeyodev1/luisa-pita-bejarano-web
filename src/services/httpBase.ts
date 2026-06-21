@@ -112,9 +112,16 @@ class APIBase {
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<T>> {
     const url = this.buildUrl(endpoint)
+    const isFormData = data instanceof FormData
+    const finalHeaders = headers || this.getHeaders()
+
+    if (isFormData) {
+      delete finalHeaders['Content-Type']
+    }
+
     try {
       return await this.axiosInstance.put<T>(url, data, {
-        headers: headers || this.getHeaders(),
+        headers: finalHeaders,
         ...config,
       })
     } catch (error: unknown) {

@@ -1,0 +1,302 @@
+@use '@/styles/index.scss' as *;
+
+.admin-payments__table-card {
+  background: $lpb-white;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 320px;
+}
+
+.admin-payments__table-wrap {
+  overflow-x: auto;
+  background-image:
+    linear-gradient(to right, $lpb-white, transparent),
+    linear-gradient(to left, $lpb-white, transparent),
+    radial-gradient(farthest-side at 0 50%, rgba($lpb-black, 0.1), transparent),
+    radial-gradient(farthest-side at 100% 50%, rgba($lpb-black, 0.1), transparent);
+  background-position: 0 0, 100% 0, 0 0, 100% 0;
+  background-repeat: no-repeat;
+  background-size: 24px 100%, 24px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.admin-payments__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    padding: 1.1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: $lpb-muted;
+    background: $lpb-cream;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.admin-payments__row {
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba($lpb-green, 0.03);
+  }
+}
+
+.admin-payments__student {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.admin-payments__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $lpb-green 0%, $lpb-green-dark 100%);
+  color: $lpb-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.admin-payments__student-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.admin-payments__student-name {
+  font-weight: 600;
+  color: $lpb-black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-payments__student-email {
+  font-size: 0.8rem;
+  color: $lpb-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-payments__plan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $lpb-black;
+}
+
+.admin-payments__amount {
+  font-family: $font-mono;
+  font-weight: 600;
+  color: $lpb-black;
+}
+
+.admin-payments__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  &--approved {
+    background: rgba($lpb-green, 0.12);
+    color: $lpb-green-deep;
+  }
+
+  &--pending {
+    background: rgba($lpb-amber, 0.12);
+    color: #92400E;
+  }
+}
+
+.admin-payments__notes {
+  font-size: 0.85rem;
+  color: $lpb-graphite;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-payments__receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: rgba($lpb-black, 0.05);
+  color: $lpb-black;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba($lpb-black, 0.1);
+  }
+}
+
+.admin-payments__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.admin-payments__action {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &--delete {
+    background: rgba($alert-error, 0.08);
+    color: $alert-error;
+
+    &:hover {
+      background: rgba($alert-error, 0.15);
+    }
+  }
+}
+
+.admin-payments__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  gap: 0.75rem;
+}
+
+.admin-payments__empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba($lpb-black, 0.04);
+  color: $lpb-muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-payments__empty-title {
+  font-family: $font-display;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: $lpb-black;
+  margin: 0;
+}
+
+.admin-payments__empty-text {
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $lpb-muted;
+  margin: 0;
+  max-width: 320px;
+}
+
+.admin-payments__skeleton {
+  padding: 0.5rem 0;
+}
+
+.admin-payments__skeleton-row {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.admin-payments__skeleton-cell {
+  height: 16px;
+  border-radius: 0.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba($lpb-black, 0.05) 25%,
+    rgba($lpb-black, 0.09) 50%,
+    rgba($lpb-black, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+
+  &--student {
+    width: 260px;
+  }
+
+  &--plan,
+  &--amount,
+  &--status,
+  &--date,
+  &--receipt {
+    width: 100px;
+  }
+
+  &--actions {
+    width: 60px;
+    margin-left: auto;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 720px) {
+  .admin-payments__table {
+    min-width: 860px;
+  }
+}

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import BrandWordmark from '@/components/ui/BrandWordmark.vue'
-import { buildVipUrl, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/config/site'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/config/site'
 
 const year = new Date().getFullYear()
 </script>
@@ -18,15 +18,13 @@ const year = new Date().getFullYear()
       </div>
 
       <div class="footer__cta">
-        <a
+        <RouterLink
           class="footer__cta-link"
-          :href="buildVipUrl('footer')"
-          target="_blank"
-          rel="noopener"
+          :to="{ name: 'register' }"
         >
-          <span>Solicitar invitación</span>
+          <span>Registrarse ahora</span>
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
+        </RouterLink>
       </div>
     </div>
 
