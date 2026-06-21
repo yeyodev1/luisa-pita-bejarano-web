@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import HeroSection from '@/components/home/HeroSection.vue'
-import ManifestoSection from '@/components/home/ManifestoSection.vue'
-import MethodSection from '@/components/home/MethodSection.vue'
-import GallerySection from '@/components/home/GallerySection.vue'
-import CommunitySection from '@/components/home/CommunitySection.vue'
+import PresaleHero from '@/components/presale/PresaleHero.vue'
+import PlansSection from '@/components/presale/PlansSection.vue'
+import BenefitsSection from '@/components/presale/BenefitsSection.vue'
 import TestimonialsSection from '@/components/home/TestimonialsSection.vue'
-import AuthoritySection from '@/components/home/AuthoritySection.vue'
-import FinalCtaSection from '@/components/home/FinalCtaSection.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
+import FinalCtaSection from '@/components/home/FinalCtaSection.vue'
 import MarqueeText from '@/components/ui/MarqueeText.vue'
 
 const marqueeItems = [
@@ -22,17 +19,14 @@ const marqueeItems = [
 
 <template>
   <div class="home">
-    <HeroSection />
+    <PresaleHero />
     <MarqueeText :items="marqueeItems" theme="green" :speed="42" />
-    <ManifestoSection />
-    <MethodSection />
-    <GallerySection />
-    <CommunitySection />
+    <PlansSection />
+    <BenefitsSection />
     <MarqueeText :items="['No es para todas', 'Si calificas, recibes el aviso primero', 'Compromiso anual real']" theme="dark" :speed="48" />
     <TestimonialsSection />
-    <AuthoritySection />
-    <FinalCtaSection />
     <FaqSection />
+    <FinalCtaSection />
   </div>
 </template>
 

@@ -1,22 +1,37 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 import { useSmoothScroll } from '@/composables/useSmoothScroll'
 import TheNav from '@/components/layout/TheNav.vue'
 import TheFooter from '@/components/layout/TheFooter.vue'
+import AppPreloader from '@/components/ui/AppPreloader.vue'
 
 useSmoothScroll()
+
+const route = useRoute()
+const userStore = useUserStore()
+const preloaded = ref(false)
+
+const showPreloader = computed(
+  () => !userStore.isAuthenticated && route.name === 'home' && !preloaded.value,
+)
+
+const isDashboard = computed(() => route.path.startsWith('/app') || route.path.startsWith('/admin'))
 </script>
 
 <template>
   <div class="app">
-    <TheNav />
-    <main class="app__main">
+    <AppPreloader v-if="showPreloader" @done="preloaded = true" />
+    <TheNav v-if="!isDashboard" />
+    <main class="app__main" :class="{ 'app__main--dashboard': isDashboard }">
       <RouterView v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
         </transition>
       </RouterView>
     </main>
-    <TheFooter />
+    <TheFooter v-if="!isDashboard" />
   </div>
 </template>
 

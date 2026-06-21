@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import BrandWordmark from '@/components/ui/BrandWordmark.vue'
-import { buildVipUrl, SITE_COPY, INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/config/site'
+import { useUserStore } from '@/stores/user'
+import { INSTAGRAM_URL, INSTAGRAM_HANDLE } from '@/config/site'
 
 const scrolled = ref(false)
 const open = ref(false)
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
 const menuContainer = ref<HTMLElement | null>(null)
 
 const onScroll = () => {
@@ -53,6 +56,12 @@ watch(open, async (val) => {
 })
 
 watch(() => route.path, close)
+
+const logout = () => {
+  userStore.logout()
+  router.push({ name: 'home' })
+  close()
+}
 </script>
 
 <template>
@@ -77,23 +86,42 @@ watch(() => route.path, close)
         ref="menuContainer"
       >
         <nav class="nav__links">
-          <a href="#filosofia" class="nav__link" @click="close">
-            <span class="nav__num">01</span> Filosofía
-          </a>
-          <a href="#metodologia" class="nav__link" @click="close">
-            <span class="nav__num">02</span> Metodología
-          </a>
-          <a href="#comunidad" class="nav__link" @click="close">
-            <span class="nav__num">03</span> Comunidad
-          </a>
-          <a href="#historias" class="nav__link" @click="close">
-            <span class="nav__num">04</span> Historias
-          </a>
-
-          <a :href="buildVipUrl('nav')" class="nav__cta" @click="close">
-            <span>{{ SITE_COPY.ctaPrimary }}</span>
-            <i class="fa-solid fa-arrow-right" />
-          </a>
+          <template v-if="!userStore.isAuthenticated">
+            <RouterLink :to="{ name: 'home', hash: '#planes' }" class="nav__link" @click="close">
+              <span class="nav__num">01</span> Pricing
+            </RouterLink>
+            <RouterLink :to="{ name: 'login' }" class="nav__link" @click="close">
+              <span class="nav__num">02</span> Iniciar sesión
+            </RouterLink>
+            <RouterLink :to="{ name: 'register' }" class="nav__cta" @click="close">
+              <span>Registrarse ahora</span>
+              <i class="fa-solid fa-arrow-right" />
+            </RouterLink>
+          </template>
+          <template v-else>
+            <RouterLink :to="{ name: 'home', hash: '#planes' }" class="nav__link" @click="close">
+              <span class="nav__num">01</span> Pricing
+            </RouterLink>
+            <RouterLink
+              :to="{ name: userStore.role === 'admin' ? 'admin-users' : 'dashboard' }"
+              class="nav__link"
+              @click="close"
+            >
+              <span class="nav__num">02</span>
+              {{ userStore.role === 'admin' ? 'Admin' : 'Mi cuenta' }}
+            </RouterLink>
+            <button type="button" class="nav__link nav__link--logout" @click="logout">
+              <span class="nav__num">03</span> Cerrar sesión
+            </button>
+            <RouterLink
+              :to="{ name: userStore.role === 'admin' ? 'admin-users' : 'dashboard' }"
+              class="nav__cta"
+              @click="close"
+            >
+              <span>{{ userStore.role === 'admin' ? 'Admin' : 'Mi cuenta' }}</span>
+              <i class="fa-solid fa-arrow-right" />
+            </RouterLink>
+          </template>
         </nav>
 
         <div class="nav__mobile-footer">
@@ -177,18 +205,10 @@ watch(() => route.path, close)
     transform-origin: center;
   }
 
-  .nav--open & {
-    span:nth-child(1) {
-      transform: translateY(4px) rotate(45deg);
-    }
-
-    span:nth-child(2) {
-      transform: translateY(-4px) rotate(-45deg);
-    }
-  }
+  .nav--open & span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .nav--open & span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
 }
 
-/* Overlay backdrop: click-to-close area */
 .nav__backdrop {
   position: fixed;
   inset: 0;
@@ -197,7 +217,6 @@ watch(() => route.path, close)
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.35s ease, visibility 0.35s ease;
-  -webkit-tap-highlight-color: transparent;
 
   &--visible {
     opacity: 1;
@@ -205,13 +224,11 @@ watch(() => route.path, close)
   }
 }
 
-/* Full-screen mobile menu */
 .nav__content {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   height: 100dvh;
   background: $lpb-paper;
   display: flex;
@@ -221,8 +238,6 @@ watch(() => route.path, close)
   padding: 5rem 2rem 3rem;
   z-index: 1050;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -253,20 +268,18 @@ watch(() => route.path, close)
   color: $lpb-black;
   text-decoration: none;
   padding: 0.6rem 0;
+  border: none;
   border-bottom: 1px solid rgba($lpb-black, 0.05);
   transition: color 0.25s ease;
+  background: none;
+  width: 100%;
+  cursor: pointer;
 
-  &:hover {
-    color: $lpb-green-dark;
-  }
+  &:hover { color: $lpb-green-dark; }
 
   .nav__num {
-    font-family: $font-mono;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: $lpb-muted;
-    margin-top: 0.25em;
+    font-family: $font-mono; font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.15em; color: $lpb-muted; margin-top: 0.25em;
   }
 }
 
@@ -320,7 +333,6 @@ watch(() => route.path, close)
   }
 }
 
-/* --- DESKTOP (min-width: 880px) --- */
 @media (min-width: 880px) {
   .nav__inner {
     padding-inline: clamp(2.5rem, 9vw, 9rem);
@@ -365,6 +377,7 @@ watch(() => route.path, close)
     border: none;
     opacity: 0.7;
     gap: 0.4rem;
+    width: auto;
 
     &:hover {
       opacity: 1;

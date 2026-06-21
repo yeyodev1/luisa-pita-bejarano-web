@@ -1,0 +1,227 @@
+@use '@/styles/index.scss' as *;
+
+.admin-payments__student-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: rgba($lpb-green, 0.06);
+  border: 1px solid rgba($lpb-green, 0.2);
+  border-radius: 1rem;
+}
+
+.admin-payments__student-info-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.admin-payments__student-info-name {
+  font-family: $font-sans;
+  font-weight: 600;
+  color: $lpb-black;
+}
+
+.admin-payments__student-info-email {
+  font-size: 0.8rem;
+  color: $lpb-muted;
+}
+
+.admin-payments__student-info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.admin-payments__student-info-label {
+  color: $lpb-graphite;
+}
+
+.admin-payments__student-info-value {
+  font-weight: 600;
+  color: $lpb-black;
+}
+
+.admin-payments__pending-days {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: $lpb-white;
+  border-radius: 0.75rem;
+  font-size: 0.85rem;
+  color: $lpb-graphite;
+  line-height: 1.45;
+
+  i {
+    color: $lpb-green-deep;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+
+  strong {
+    color: $lpb-black;
+  }
+}
+
+.admin-payments__plan-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.admin-payments__plan-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: $lpb-cream;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba($lpb-black, 0.2);
+  }
+
+  &--active {
+    background: rgba($lpb-green, 0.08);
+    border-color: $lpb-green;
+    box-shadow: 0 0 0 3px rgba($lpb-green, 0.1);
+  }
+}
+
+.admin-payments__plan-option-name {
+  font-family: $font-sans;
+  font-weight: 600;
+  color: $lpb-black;
+}
+
+.admin-payments__plan-option-desc {
+  font-size: 0.8rem;
+  color: $lpb-muted;
+}
+
+.admin-payments__plan-option-price {
+  font-family: $font-display;
+  font-size: 1.15rem;
+  color: $lpb-green-deep;
+  margin-top: 0.25rem;
+}
+
+.admin-payments__file {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 2px dashed var(--border);
+  border-radius: 1rem;
+  background: $lpb-cream;
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    border-color: $lpb-green;
+    background: rgba($lpb-green, 0.04);
+  }
+}
+
+.admin-payments__file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-payments__file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $lpb-green-deep;
+}
+
+.admin-payments__file-name {
+  font-size: 0.85rem;
+  color: $lpb-muted;
+}
+
+.admin-payments__preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: $lpb-cream;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.admin-payments__preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: $lpb-white;
+  flex-shrink: 0;
+}
+
+.admin-payments__preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.admin-payments__preview-name {
+  font-size: 0.9rem;
+  color: $lpb-black;
+  word-break: break-all;
+}
+
+.admin-payments__preview-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: rgba($alert-error, 0.08);
+  color: $alert-error;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba($alert-error, 0.15);
+  }
+}
+
+.admin-payments__error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: $alert-error-bg;
+  color: $alert-error;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .admin-payments__plan-options {
+    grid-template-columns: 1fr;
+  }
+}

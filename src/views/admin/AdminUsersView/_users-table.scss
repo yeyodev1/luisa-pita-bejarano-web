@@ -1,0 +1,348 @@
+@use '@/styles/index.scss' as *;
+
+.admin-users__table-card {
+  background: $lpb-white;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 320px;
+}
+
+.admin-users__table-wrap {
+  overflow-x: auto;
+  background-image:
+    linear-gradient(to right, $lpb-white, transparent),
+    linear-gradient(to left, $lpb-white, transparent),
+    radial-gradient(farthest-side at 0 50%, rgba($lpb-black, 0.1), transparent),
+    radial-gradient(farthest-side at 100% 50%, rgba($lpb-black, 0.1), transparent);
+  background-position: 0 0, 100% 0, 0 0, 100% 0;
+  background-repeat: no-repeat;
+  background-size: 24px 100%, 24px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.admin-users__table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: $font-sans;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    padding: 1.1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: $lpb-muted;
+    background: $lpb-cream;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.admin-users__row {
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba($lpb-green, 0.03);
+  }
+}
+
+.admin-users__user {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.admin-users__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $lpb-green 0%, $lpb-green-dark 100%);
+  color: $lpb-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.admin-users__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.admin-users__user-name {
+  font-weight: 600;
+  color: $lpb-black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-users__founder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: rgba($lpb-amber, 0.15);
+  color: #92400E;
+  font-family: $font-mono;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-users__user-email {
+  font-size: 0.8rem;
+  color: $lpb-muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-users__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  &--admin {
+    background: rgba($lpb-amber, 0.12);
+    color: #92400E;
+  }
+
+  &--user {
+    background: rgba($lpb-green, 0.1);
+    color: $lpb-green-deep;
+  }
+
+  &--active {
+    background: rgba($lpb-green, 0.12);
+    color: $lpb-green-deep;
+  }
+
+  &--pending {
+    background: rgba($lpb-amber, 0.12);
+    color: #92400E;
+  }
+
+  &--none {
+    background: rgba($lpb-black, 0.05);
+    color: $lpb-muted;
+  }
+}
+
+.admin-users__access {
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $lpb-black;
+
+  &--none {
+    color: $lpb-muted;
+  }
+}
+
+.admin-users__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.admin-users__action {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &--extend {
+    background: rgba($lpb-green, 0.1);
+    color: $lpb-green-deep;
+
+    &:hover {
+      background: rgba($lpb-green, 0.2);
+    }
+  }
+
+  &--revoke {
+    background: rgba($lpb-amber, 0.1);
+    color: #92400E;
+
+    &:hover {
+      background: rgba($lpb-amber, 0.2);
+    }
+  }
+
+  &--delete {
+    background: rgba($alert-error, 0.08);
+    color: $alert-error;
+
+    &:hover {
+      background: rgba($alert-error, 0.15);
+    }
+  }
+
+  &--founder {
+    background: rgba($lpb-black, 0.05);
+    color: $lpb-muted;
+
+    &:hover {
+      background: rgba($lpb-amber, 0.15);
+      color: #92400E;
+    }
+  }
+
+  &--founder-active {
+    background: rgba($lpb-amber, 0.15);
+    color: #92400E;
+
+    &:hover {
+      background: rgba($lpb-amber, 0.25);
+    }
+  }
+}
+
+.admin-users__self-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: rgba($lpb-green, 0.1);
+  color: $lpb-green-deep;
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-users__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  gap: 0.75rem;
+}
+
+.admin-users__empty-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba($lpb-black, 0.04);
+  color: $lpb-muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-users__empty-title {
+  font-family: $font-display;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: $lpb-black;
+  margin: 0;
+}
+
+.admin-users__empty-text {
+  font-family: $font-sans;
+  font-size: 0.9rem;
+  color: $lpb-muted;
+  margin: 0;
+  max-width: 320px;
+}
+
+.admin-users__skeleton {
+  padding: 0.5rem 0;
+}
+
+.admin-users__skeleton-row {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.admin-users__skeleton-cell {
+  height: 16px;
+  border-radius: 0.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba($lpb-black, 0.05) 25%,
+    rgba($lpb-black, 0.09) 50%,
+    rgba($lpb-black, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+
+  &--name {
+    width: 240px;
+  }
+
+  &--email {
+    width: 220px;
+  }
+
+  &--role,
+  &--status,
+  &--access {
+    width: 120px;
+  }
+
+  &--actions {
+    width: 140px;
+    margin-left: auto;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 720px) {
+  .admin-users__table {
+    min-width: 760px;
+  }
+}
